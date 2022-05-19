@@ -76,11 +76,12 @@ class `Project`:
 
 class `DocumentList`:
 
-- property `everything: DocumentList`: Removes all filters from list
+- property `everything: DocumentList`: Removes all filters from the list
 - property `onlyModels: DocumentList`: Filters the list by models
 - property `onlyAnimations: DocumentList`: Filters the list by animations
 - operator `[]` (getitem) with `int`: Returns the n-th document
-- operator `[]` (getitem) with `guid`: Returns the document with GUID
+- operator `[]` (getitem) with `AnimationDocumentGuid`: Returns the animation document with the GUID
+- operator `[]` (getitem) with `ModelDocumentGuid`: Returns the model document with the GUID
 - operator `+=` (iadd): Adds the document to the project
 - operator `-=` (isub): Removes the document from the project
 - operator `in` (contains): Returns `True` if the document is contained in the project
@@ -99,6 +100,7 @@ Model documents are used for rigging and contain the following elements:
 class `ModelDocument`:
 
 - property `name: str`: The name of the model
+- property `guid: AnimationDocumentGuid | ModelDocumentGuid`: Returns the GUID of the document
 - property `filename: str`: The file path of the model
 - property `size: (int, int)`: The model dimensions in as with x height tuple
 - property `imageSources: ImageSourceList`: All linked PSD image sources
@@ -106,16 +108,65 @@ class `ModelDocument`:
 - property `parameters: ParameterList`: All parameters
 - property `physics: PhysicsList`: All physics
 - property `elements: ElementList`: All model elements
-- method `createImageSource(name: str, path: str)`: Creates new PSD source file from path
-- method `createModelImageGroup(name: str)`: Creates new model image group
-- method `createModelImage(name: str, layer: Layer)`: Creates new model image for the provided PSD layer
-- method `createParameter(name: str, id: str)`: Creates a new parameter
-- method `createParameterGroup(name: str, id: str)`: Creates a new parameter group
-- method `createPhysics(name: str, id: str)`: Creates a new physics setting
-- method `createPart(name: str, id: str)`: Creates a new part (folder) element
-- method `createArtMesh(name: str, id: str, image: ModelImage)`: Creates a new art mesh element
-- method `createWarpDeformer(name: str, id: str, x: float, y: float, width: float, height: float, columns: int, rows: int)`: Creates a new warp deformer at the specified location with the specified dimensions and number of subdivisions
-- method `createRotationDeformer(name: str, id: str, x: float, y: float, angle: float, scale: float)`: Creates a new rotation deformer at the specified location with the provided angle and scale
+- method `createImageSource(name: str, path: str): ImageSource`: Creates new PSD source file from path
+- method `createModelImageGroup(name: str): ModelImageGroup`: Creates new model image group
+- method `createModelImage(name: str, layer: Layer): ModelImage`: Creates new model image for the provided PSD layer
+- method `createParameter(name: str, id: str): Parameter`: Creates a new parameter
+- method `createParameterGroup(name: str, id: str): ParameterGroup`: Creates a new parameter group
+- method `createPhysics(name: str, id: str): Physics`: Creates a new physics setting
+- method `createPart(name: str, id: str): Part`: Creates a new part (folder) element
+- method `createArtMesh(name: str, id: str, image: ModelImage): ArtMesh`: Creates a new art mesh element
+- method `createWarpDeformer(name: str, id: str, x: float, y: float, width: float, height: float, columns: int, rows: int): WarpDeformer`: Creates a new warp deformer at the specified location with the specified dimensions and number of subdivisions
+- method `createRotationDeformer(name: str, id: str, x: float, y: float, angle: float, scale: float): RotationDeformer`: Creates a new rotation deformer at the specified location with the provided angle and scale
+- operator `[]` (getitem) with `ImageSourceNamePath`: Returns the image source with the name-based path
+- operator `[]` (getitem) with `ImageSourceGuid`: Returns the image source with the GUID
+- operator `[]` (getitem) with `ImageSourceGuidPath`: Returns the image source with the GUID-based path
+- operator `[]` (getitem) with `ModelImageGroupNamePath`: Returns the model image group with the name-based path
+- operator `[]` (getitem) with `ModelImageNamePath`: Returns the model image with the name-based path
+- operator `[]` (getitem) with `ModelImageGuidPath`: Returns the model image with the GUID-based path
+- operator `[]` (getitem) with `ParameterNamePath`: Returns the parameter with the name-based path
+- operator `[]` (getitem) with `ParameterIdPath`: Returns the parameter with the ID-based path
+- operator `[]` (getitem) with `ParameterGuid`: Returns the parameter with the GUID
+- operator `[]` (getitem) with `ParameterGuidPath`: Returns the parameter with the GUID-based path
+- operator `[]` (getitem) with `ParameterChildNamePath`: Returns the parameter or parameter group with the name-based path
+- operator `[]` (getitem) with `ParameterChildIdPath`: Returns the parameter or parameter group with the ID-based path
+- operator `[]` (getitem) with `ParameterChildGuidPath`: Returns the parameter or parameter group with the GUID-based path
+- operator `[]` (getitem) with `ParameterGroupNamePath`: Returns the parameter group with the name-based path
+- operator `[]` (getitem) with `ParameterGroupIdPath`: Returns the parameter group with the ID-based path
+- operator `[]` (getitem) with `ParameterGroupGuid`: Returns the parameter group with the GUID
+- operator `[]` (getitem) with `ParameterGroupGuidPath`: Returns the parameter group with the GUID-based path
+- operator `[]` (getitem) with `PhysicsNamePath`: Returns the physics with the name-based path
+- operator `[]` (getitem) with `PhysicsGuid`: Returns the physics with the GUID
+- operator `[]` (getitem) with `PhysicsGuidPath`: Returns the physics with the GUID-based path
+- operator `[]` (getitem) with `PhysicsInputGuid`: Returns the phsyics input with the GUID
+- operator `[]` (getitem) with `PhysicsInputGuidPath`: Returns the phsyics input with the GUID-based path
+- operator `[]` (getitem) with `PhysicsOutputGuid`: Returns the phsyics output with the GUID
+- operator `[]` (getitem) with `PhysicsOutputGuidPath`: Returns the phsyics output with the GUID-based path
+- operator `[]` (getitem) with `PhysicsVertexGuid`: Returns the phsyics vertex with the GUID
+- operator `[]` (getitem) with `PhysicsVertexGuidPath`: Returns the phsyics vertex with the GUID-based path
+- operator `[]` (getitem) with `PartNamePath`: Returns the part (group) with the name-based path
+- operator `[]` (getitem) with `PartIdPath`: Returns the part (group) with the ID-based path
+- operator `[]` (getitem) with `PartGuid`: Returns the part (group) with the GUID
+- operator `[]` (getitem) with `PartGuidPath`: Returns the part (group) with the GUID-based path
+- operator `[]` (getitem) with `ChildNamePath`: Returns the element with the name-based path
+- operator `[]` (getitem) with `ChildIdPath`: Returns the element with the ID-based path
+- operator `[]` (getitem) with `ChildGuidPath`: Returns the element with the GUID-based path
+- operator `[]` (getitem) with `ArtMeshNamePath`: Returns the art mesh with the name-based path
+- operator `[]` (getitem) with `ArtMeshIdPath`: Returns the art mesh with the ID-based path
+- operator `[]` (getitem) with `ArtMeshGuid`: Returns the art mesh with the GUID
+- operator `[]` (getitem) with `ArtMeshGuidPath`: Returns the art mesh with the GUID-based path
+- operator `[]` (getitem) with `WarpDeformerNamePath`: Returns the warp deformer with the name-based path
+- operator `[]` (getitem) with `WarpDeformerIdPath`: Returns the warp deformer with the ID-based path
+- operator `[]` (getitem) with `WarpDeformerGuid`: Returns the warp deformer with the GUID
+- operator `[]` (getitem) with `WarpDeformerGuidPath`: Returns the warp deformer with the GUID-based path
+- operator `[]` (getitem) with `RotationDeformerNamePath`: Returns the rotation deformer with the name-based path
+- operator `[]` (getitem) with `RotationDeformerIdPath`: Returns the rotation deformer with the ID-based path
+- operator `[]` (getitem) with `RotationDeformerGuid`: Returns the rotation deformer with the GUID
+- operator `[]` (getitem) with `RotationDeformerGuidPath`: Returns the rotation deformer with the GUID-based path
+- operator `[]` (getitem) with `GlueNamePath`: Returns the glue with the name-based path
+- operator `[]` (getitem) with `GlueIdPath`: Returns the glue with the ID-based path
+- operator `[]` (getitem) with `GlueGuid`: Returns the glue with the GUID
+- operator `[]` (getitem) with `GlueGuidPath`: Returns the glue with the GUID-based path
 
 ---
 
@@ -161,23 +212,61 @@ rightEye = myPsdFile[LayerGroupName  / 'Head' / 'Eyes' / 'EyeR']
 
 class `ImageSourceList`:
 
-- TODO
+- operator `[]` (getitem) with `int`: Returns the n-th PSD image source
+- operator `[]` (getitem) with `str`: Returns the PSD image source with name
+- operator `[]` (getitem) with `ImageSourceGuid`: Returns the PSD image source with the GUID
+- operator `+=` (iadd): Adds the PSD image source to the model
+- operator `-=` (isub): Removes the PSD image source from the model
+- operator `in` (contains): Returns `True` if the PSD image source is contained in the model
 
 class `ImageSource`:
 
-- TODO
+- property `name: str`: The name of the PSD image file
+- property `filename: str`: The file name of the PSD image file
+- property `size: (int, int)`: The PSD image dimensions (width x height)
+- property `memo: str`: Additional text information about the PSD image source
+- property `description: str`: Additional description for the PSD image source
+- property `layers: LayerList`: All layers of this PSD image file
+- operator `[]` (getitem) with `int`: Returns the n-th PSD image layer or group
+- operator `[]` (getitem) with `str`: Returns the PSD image layer or group with name
+- operator `[]` (getitem) with `ImageLayerGuid`: Returns the PSD image layer with the GUID
+- operator `[]` (getitem) with `ImageLayerGroupGuid`: Returns the PSD image layer group with the GUID
+- operator `+=` (iadd): Adds the PSD image layer or group to the image source
+- operator `-=` (isub): Removes the PSD image layer or group from the image source
+- operator `in` (contains): Returns `True` if the PSD image layer or group is contained in the image source
 
 class `LayerList`:
 
-- TODO
+- property `everything: LayerList`: Removes all filters from the list
+- property `onlyLayers: LayerList`: Filters the list by layers (no groups)
+- property `onlyGroups: LayerList`: Filters the list by groups (no layers)
+- operator `[]` (getitem) with `int`: Returns the n-th PSD image layer or group
+- operator `[]` (getitem) with `str`: Returns the PSD image layer or group with name
+- operator `[]` (getitem) with `ImageLayerGuid`: Returns the PSD image layer with the GUID
+- operator `[]` (getitem) with `ImageLayerGroupGuid`: Returns the PSD image layer group with the GUID
+- operator `+=` (iadd): Adds the PSD image layer or group to the image source
+- operator `-=` (isub): Removes the PSD image layer or group from the image source
+- operator `in` (contains): Returns `True` if the PSD image layer or group is contained in the image source
 
 class `Layer`:
 
-- TODO
+- property `name: str`: The layer name
+- property `guid: LayerGuid`: The layer GUID
+- property `filename: str`: The PSD image source file name of this layer
 
 class `LayerGroup`:
 
-- TODO
+- property `name: str`: The layer group name
+- property `guid: LayerGroupGuid`: The layer group GUID
+- property `filename: str`: The PSD image source file name of this layer group
+- property `layers: LayerList`: The layers contained by this layer group
+- operator `[]` (getitem) with `int`: Returns the n-th PSD image layer or group
+- operator `[]` (getitem) with `str`: Returns the PSD image layer or group with name
+- operator `[]` (getitem) with `ImageLayerGuid`: Returns the PSD image layer with the GUID
+- operator `[]` (getitem) with `ImageLayerGroupGuid`: Returns the PSD image layer group with the GUID
+- operator `+=` (iadd): Adds the PSD image layer or group to the layer group
+- operator `-=` (isub): Removes the PSD image layer or group from the layer group
+- operator `in` (contains): Returns `True` if the PSD image layer or group is contained in the layer group
 
 ---
 
@@ -216,11 +305,20 @@ eyeL        = document[ModelImageName      / 'My Group' / 'EyeL']
 
 class `ModelImageGroupList`:
 
-- TODO
+- operator `[]` (getitem) with `int`: Returns the n-th model image group
+- operator `[]` (getitem) with `str`: Returns the model image group with name
+- operator `[]` (getitem) with `ModelImageGroupNamePath`: Returns the model image group with the name-based path
+- operator `[]` (getitem) with `ModelImageNamePath`: Returns the model image with the name-based path
+- operator `+=` (iadd): Adds the model image group to the model
+- operator `-=` (isub): Removes the model image group from the model
+- operator `in` (contains): Returns `True` if the model image group is contained in the model
 
 class `ModelImageGroup`:
 
-- TODO
+- property `name: str`: The name of the model image group
+- property `modelImages: ModelImageList`: All contained model images
+- method `createModelImage(name: str)`: Creates a new model image without linked layers
+- method `createModelImageFromLayer(name: str, layer: Layer)`: Creates a new model image with an associated linked PSD image source layer
 
 class `ModelImageList`:
 
@@ -237,6 +335,13 @@ class `LinkedLayerList`:
 ---
 
 Parameters are show in Cubism in Parameter tab and can be accessed via the **parameters** member variable.
+
+The following paths exist for accessing parameters:
+
+- ParameterGroupName: A parameter group name
+- ParameterGroupId: A parameter group ID
+- ParameterName: A parameter name
+- ParameterId: A parameter ID
 
 ![Parameter Tab](./images/parameter-tab.png)
 
@@ -281,4 +386,52 @@ Physics: TODO
 
 ---
 
-Model Elements: TODO
+Model elements are shown in Cubism in the Part tab and can be accessed via the **elements** member variable.
+Each element can either be a part, art mesh, warp / rotation deformer or glue.
+Parts are the folders that are shown in the Cubism Part tab.
+
+![Part Tab](./images/part-tab.png)
+
+All elements contain keyforms which can be accesse via the **keyforms** member variable.
+To add new keyforms the **boundParameters** member variable has to be used.
+
+The following paths exist for accessing elements:
+
+- PartNamePath: A part (group) name in the model
+- PartIdPath: A part (group) ID in the model
+- ChildNamePath: An element name in the model
+- ChildIdPath: An element ID in the model
+- ArtMeshNamePath: An art mesh name in the model
+- ArtMeshIdPath: An art mesh ID in the model
+- WarpDeformerNamePath: A warp deformer name in the model
+- WarpDeformerIdPath: A warp deformer ID in the model
+- RotationDeformerNamePath: A rotation deformer name in the model
+- RotationDeformerIdPath: A rotation deformer ID in the model
+- GlueNamePath: A glue name in the model
+- GlueIdPath: A glue ID in the model
+
+```python
+#!/bin/env python2.7
+
+myModel = project.documents.onlyModels[0]
+
+def printElements(elem, prefix=''):
+    print('%s%s' % (prefix, elem))
+    print('%s  Path: \"%s\"' % (prefix, elem.path))
+    print('%s  Id: \"%s\"' % (prefix, elem.id))
+    for parameter in elem.boundParameters:
+        print('%s  Bound Parameter: %s' % parameter)
+    for keyform in elem.keyforms:
+        print('%s  Keyform: %s' % keyform)
+    if isinstance(elem, Part):
+        print('%s  Children:' % (prefix,))
+        for child in elem:
+            printElements(child, prefix + '    ')
+
+for element in myModel.elements:
+    printElements(element)
+```
+
+ToDo
+
+
